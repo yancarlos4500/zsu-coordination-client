@@ -4,8 +4,8 @@ import { io } from 'socket.io-client';
 import FlightMap from './FlightMap';
 import './index.css';
 
-// const socket = io('https://zsu-coordination-server-production.up.railway.app/');
-const socket = io('http://localhost:3001');
+const socket = io('https://zsu-coordination-server-production.up.railway.app/');
+// const socket = io('http://localhost:3001');
 const COLUMNS = ['Callsign', 'Waypoint', 'Center Estimate', 'Pilot Estimate', 'Altitude', 'Mach', 'Status'];
 
 function Table({ title, data, toggleColor, updateField }) {
