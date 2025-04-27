@@ -197,13 +197,19 @@ function App() {
 
   return (
     <div className="bg-gray-950 text-white min-h-screen p-10">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-4 px-2">
           <h1 className="text-4xl font-bold">ZSU Coordination</h1>
           <span className="text-xl text-gray-400">{zuluTime}</span>
         </div>
-        <Table title="✈️ Entering ZSU (Inbound)" data={inbound} toggleColor={toggleColor} updateField={updateField} />
-        <Table title="🛫 Leaving ZSU (Outbound)" data={outbound} toggleColor={toggleColor} updateField={updateField} />
+        <div className="flex flex-wrap gap-4 justify-center">
+  <div className="flex-1 min-w-[500px]">
+    <Table title="✈️ Entering ZSU (Inbound)" data={inbound} toggleColor={toggleColor} updateField={updateField} />
+  </div>
+  <div className="flex-1 min-w-[500px]">
+    <Table title="🛫 Leaving ZSU (Outbound)" data={outbound} toggleColor={toggleColor} updateField={updateField} />
+  </div>
+</div>
         <FlightMap flights={[...inbound, ...outbound]} />
         <p className="mt-6 text-center text-gray-400 text-sm">
           Pilot estimate entry must be in HHMM format. Center time highlights green if within 3 minutes of pilot estimate.

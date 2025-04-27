@@ -2,11 +2,12 @@
 import L from 'leaflet';
 import { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, GeoJSON, useMap } from 'react-leaflet';
+import 'leaflet-rotatedmarker';
 
 
 const icon = L.icon({
-  iconUrl: ('/flight-icon.png'),
-  iconSize: [35, 35],
+  iconUrl: ('/aircraft-icon.png'),
+  iconSize: [30, 35],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
   shadowSize: [41, 41],
@@ -17,11 +18,7 @@ function FitBoundaries({ zsuBoundary, zwyBoundary, ttzpBoundary, svzmBoundary, t
   const map = useMap();
   useEffect(() => {
     const coords = [
-      ...(zsuBoundary?.geometry?.coordinates[0] || []),
-      ...(zwyBoundary?.geometry?.coordinates[0] || []),
-      ...(ttzpBoundary?.geometry?.coordinates[0] || []),
-      ...(svzmBoundary?.geometry?.coordinates[0] || []),
-      ...(tncfBoundary?.geometry?.coordinates[0] || [])
+      ...(zsuBoundary?.geometry?.coordinates[0] || [])
     ];
     const latLngBounds = coords.map(([lon, lat]) => [lat, lon]); // Flip order
     if (latLngBounds.length > 0) {
@@ -53,7 +50,7 @@ function FlightMap({ flights }) {
 
   return (
     <div className="map-wrapper">
-      <MapContainer center={[18.5, -66]} zoom={6} className="leaflet-container">
+      <MapContainer center={[18.8649397,-64.9495477]} zoom={3} className="leaflet-container">
         <TileLayer
           url="https://api.mapbox.com/styles/v1/yancarlos4500/clnorn0yn008v01qugoglakdj/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoieWFuY2FybG9zNDUwMCIsImEiOiJja2ZrbnQzdmExMDhnMzJwbTdlejNhdnJuIn0.aoHpGyZLaQRcp8SPYowuOQ"
           attribution="© OpenStreetMap"
@@ -80,7 +77,8 @@ function FlightMap({ flights }) {
           position={[flight.lat, flight.lon]} 
           icon={icon}
           rotationAngle={flight.heading}
-          rotationOrigin={'center center'}>
+          rotationOrigin={'center center'}
+          >
             <Popup>{flight.Callsign}</Popup>
           </Marker>
         ))}
