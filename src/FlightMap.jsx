@@ -3,12 +3,25 @@ import L from 'leaflet';
 import { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, GeoJSON, useMap } from 'react-leaflet';
 
-function FitBoundaries({ zsuBoundary, zwyBoundary }) {
+
+const icon = L.icon({
+  iconUrl: ('/flight-icon.png'),
+  iconSize: [35, 35],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41],
+  shadowAnchor: [13, 41],
+})
+
+function FitBoundaries({ zsuBoundary, zwyBoundary, ttzpBoundary, svzmBoundary, tncfBoundary}) {
   const map = useMap();
   useEffect(() => {
     const coords = [
       ...(zsuBoundary?.geometry?.coordinates[0] || []),
-      ...(zwyBoundary?.geometry?.coordinates[0] || [])
+      ...(zwyBoundary?.geometry?.coordinates[0] || []),
+      ...(ttzpBoundary?.geometry?.coordinates[0] || []),
+      ...(svzmBoundary?.geometry?.coordinates[0] || []),
+      ...(tncfBoundary?.geometry?.coordinates[0] || [])
     ];
     const latLngBounds = coords.map(([lon, lat]) => [lat, lon]); // Flip order
     if (latLngBounds.length > 0) {
@@ -21,6 +34,9 @@ function FitBoundaries({ zsuBoundary, zwyBoundary }) {
 function FlightMap({ flights }) {
   const [zsuBoundary, setZsuBoundary] = useState(null);
   const [zwyBoundary, setZwyBoundary] = useState(null);
+  const [ttzpBoundary, setTtzpPBoundary] = useState(null);
+  const [svzmBoundary, setSvzmBoundary] = useState(null);
+  const [tncfBoundary, setTncfBoundary] = useState(null);
 
   useEffect(() => {
     fetch('/Boundaries.geojson')
@@ -29,6 +45,9 @@ function FlightMap({ flights }) {
         const features = data.features || [];
         setZsuBoundary(features.find(f => f.properties?.id === 'TJZS'));
         setZwyBoundary(features.find(f => f.properties?.id === 'KZWY'));
+        setTtzpPBoundary(features.find(f => f.properties?.id === 'TTZP'));
+        setSvzmBoundary(features.find(f => f.properties?.id === 'SVZM'));
+        setTncfBoundary(features.find(f => f.properties?.id === 'TNCF'));
       });
   }, []);
 
@@ -45,14 +64,103 @@ function FlightMap({ flights }) {
         {zwyBoundary && (
           <GeoJSON data={zwyBoundary} style={{  weight: 2, fillOpacity: 0 }} />
         )}
+         {zwyBoundary && (
+          <GeoJSON data={ttzpBoundary} style={{  weight: 2, fillOpacity: 0 }} />
+        )}
+         {zwyBoundary && (
+          <GeoJSON data={svzmBoundary} style={{  weight: 2, fillOpacity: 0 }} />
+        )}
+         {zwyBoundary && (
+          <GeoJSON data={tncfBoundary} style={{  weight: 2, fillOpacity: 0 }} />
+        )}
         <FitBoundaries zsuBoundary={zsuBoundary} zwyBoundary={zwyBoundary} />
         {flights.filter(f => f.lat && f.lon).map((flight, idx) => (
-          <Marker key={idx} position={[flight.lat, flight.lon]}>
+          <Marker 
+          key={idx} 
+          position={[flight.lat, flight.lon]} 
+          icon={icon}
+          rotationAngle={flight.heading}
+          rotationOrigin={'center center'}>
             <Popup>{flight.Callsign}</Popup>
           </Marker>
         ))}
       
+{/* TTZP */}
+<Marker
+  position={[15, -64.146247]}
+  icon={L.divIcon({
+    html: '<div style="color: cyan; font-size: 20px;">▲<div style="font-size:12px;  position: relative; top: -5px; left:-5px;">ANADA</div></div>',
+    className: '',
+    iconSize: [30, 30]
+  })}
+/>
 
+<Marker
+  position={[15, -63.250000]}
+  icon={L.divIcon({
+    html: '<div style="color: cyan; font-size: 20px;">▲<div style="font-size:12px;  position: relative; top: -5px; left:-5px;">GEECE</div></div>',
+    className: '',
+    iconSize: [30, 30]
+  })}
+/>
+
+<Marker
+  position={[ 16.301111,-63]}
+  icon={L.divIcon({
+    html: '<div style="color: cyan; font-size: 20px;">▲<div style="font-size:12px;  position: relative; top: -5px; left:-5px;">ILURI</div></div>',
+    className: '',
+    iconSize: [30, 30]
+  })}
+/>
+
+<Marker
+  position={[ 16.958889,-63.000000]}
+  icon={L.divIcon({
+    html: '<div style="color: cyan; font-size: 20px;">▲<div style="font-size:12px;  position: relative; top: -5px; left:-5px;">MODUX</div></div>',
+    className: '',
+    iconSize: [30, 30]
+  })}
+/>
+
+<Marker
+  position={[ 17.353333,-63.000000]}
+  icon={L.divIcon({
+    html: '<div style="color: cyan; font-size: 20px;">▲<div style="font-size:12px;  position: relative; top: -5px; left:-5px;">GABAR</div></div>',
+    className: '',
+    iconSize: [30, 30]
+  })}
+/>
+
+<Marker
+  position={[17.473056,-62.833056]}
+  icon={L.divIcon({
+    html: '<div style="color: cyan; font-size: 20px;">▲<div style="font-size:12px;  position: relative; top: -5px; left:-5px;">ZPATA</div></div>',
+    className: '',
+    iconSize: [30, 30]
+  })}
+/>
+
+<Marker
+  position={[ 17.650056,-62.554389]}
+  icon={L.divIcon({
+    html: '<div style="color: cyan; font-size: 20px;">▲<div style="font-size:12px;  position: relative; top: -5px; left:-5px;">ELOPO</div></div>',
+    className: '',
+    iconSize: [30, 30]
+  })}
+/>
+
+<Marker
+  position={[18, -61.966111]}
+  icon={L.divIcon({
+    html: '<div style="color: cyan; font-size: 20px;">▲<div style="font-size:12px;  position: relative; top: -5px; left:-5px;">LAMKN</div></div>',
+    className: '',
+    iconSize: [30, 30]
+  })}
+/>
+
+
+
+{/* ZWY */}
 
 <Marker
   position={[21.621478, -67.197817]}

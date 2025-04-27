@@ -4,7 +4,8 @@ import { io } from 'socket.io-client';
 import FlightMap from './FlightMap';
 import './index.css';
 
-const socket = io('https://zsu-coordination-server-production.up.railway.app/');
+// const socket = io('https://zsu-coordination-server-production.up.railway.app/');
+const socket = io('http://localhost:3001');
 const COLUMNS = ['Callsign', 'Waypoint', 'Center Estimate', 'Pilot Estimate', 'Altitude', 'Mach', 'Status'];
 
 function Table({ title, data, toggleColor, updateField }) {
@@ -48,16 +49,16 @@ function Table({ title, data, toggleColor, updateField }) {
               let textColor = 'white';
               let bgColor = 'bg-gray-900';
 
-              const centerHour = parseInt(centerRaw.slice(0, 2));
-              const centerMin = parseInt(centerRaw.slice(3, 5));
-              const now = new Date();
-              const centerEstimateDate = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), centerHour, centerMin));
-              const diffMin = (centerEstimateDate - now) / 1000 / 60;
-console.log(diffMin);
-console.log(textColor);
-              if (diffMin > 60) {
-                return false;   // Muted color for aircraft with estimate older than 30 minutes
-              } 
+//               const centerHour = parseInt(centerRaw.slice(0, 2));
+//               const centerMin = parseInt(centerRaw.slice(3, 5));
+//               const now = new Date();
+//               const centerEstimateDate = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), centerHour, centerMin));
+//               const diffMin = (centerEstimateDate - now) / 1000 / 60;
+// console.log(diffMin);
+// console.log(textColor);
+//               // if (diffMin > 300) {
+//               //   return false;   // Muted color for aircraft with estimate older than 30 minutes
+//               // } 
 
               if (isCoord) {
                 bgColor = row.Status === 'green' ? 'bg-green-600' : 'bg-red-600';
